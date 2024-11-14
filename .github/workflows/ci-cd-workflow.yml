@@ -36,21 +36,9 @@ jobs:
       - name: Get Jira Ticket Number
         id: get_jira_ticket_number
         run: |
-          echo "get the jira ticket number from the prefix of the branch name or pull request title"
-          echo "for example 'BC-12345-this is my brach-name' will be jira ticket BC-12345"
-          echo "Branch name ref: ${{ github.ref_name }}"
-          echo "Branch name base_ref: ${{ github.base_ref }}"
-          echo "Branch name head_ref: ${{ github.head_ref }}"
-          echo "Branch name workflow_ref: ${{ github.workflow_ref }}"
-          echo "Branch name pull_request.head.ref: ${{ github.event.pull_request.head.ref }}"
-          echo "Branch name base: ${{ github.event.pull_request.base.ref }}"
-          JIRA_TICKET_NUMBER=$(echo ${{ github.event.pull_request.base.ref }} | grep -oP '([A-Z]+-\d+)')
-          if [ -z "$JIRA_TICKET_NUMBER" ]; then
-            echo "No ticket number found in branch name, checking pull request title..."
-            JIRA_TICKET_NUMBER=$(echo ${{ github.event.pull_request.title }} | grep -oP '([A-Z]+-\d+)')
-          fi
-          echo "Jira ticket number: $JIRA_TICKET_NUMBER"
-          # Set the output variable
-          echo "JIRA_TICKET_NUMBER=$JIRA_TICKET_NUMBER" >> $GITHUB_ENV
+          # Get the Branch Name
+          MERGE_COMMIT_MESSAGE=$(git log --format=%B -n 1 "${GITHUB_SHA}")
+          BRANCH_NAME=$(echo "$MERGE_COMMIT_MESSAGE" | grep -oP '(?<=from ).*' | awk -F/ '{print $NF}')
+          echo "Branch Name: $BRANCH_NAME"
 
           
