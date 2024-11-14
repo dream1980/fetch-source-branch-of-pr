@@ -39,6 +39,9 @@ jobs:
           echo "get the jira ticket number from the prefix of the branch name or pull request title"
           echo "for example 'BC-12345-this is my brach-name' will be jira ticket BC-12345"
           echo "Branch name ref: ${{ github.ref_name }}"
+          echo "Branch name base_ref: ${{ github.base_ref }}"
+          echo "Branch name head_ref: ${{ github.head_ref }}"
+          echo "Branch name workflow_ref: ${{ github.workflow_ref }}"
           echo "Branch name base: ${{ github.event.pull_request.base.ref }}"
           JIRA_TICKET_NUMBER=$(echo ${{ github.event.pull_request.base.ref }} | grep -oP '([A-Z]+-\d+)')
           if [ -z "$JIRA_TICKET_NUMBER" ]; then
