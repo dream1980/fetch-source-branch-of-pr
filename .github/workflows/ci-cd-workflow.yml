@@ -37,3 +37,12 @@ jobs:
 
       - name: Print Source Branch Name
         run: echo "Source branch name is ${{ env.BRANCH_NAME }}"
+
+      - name: Get Source Branch Name from PR
+        if: github.event_name == 'pull_request'
+        id: get_source_branch
+        run: echo "SOURCE_BRANCH=$(echo ${GITHUB_HEAD_REF})" >> $GITHUB_ENV
+
+      - name: Print Source Branch Name from PR
+        if: github.event_name == 'pull_request'
+        run: echo "Source branch name from PR is ${{ env.SOURCE_BRANCH }}"
