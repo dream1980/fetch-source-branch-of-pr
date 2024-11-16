@@ -35,7 +35,7 @@ jobs:
         run: |
           echo "get the jira ticket number from the prefix of the branch name"
           echo "for example 'BC-12345-this is my brach-name' will be jira ticket BC-12345"
-          JIRA_TICKET_NUMBER=$(echo ${{ env.SOURCE_BRANCH_NAME }} | grep -oP '([A-Z]+-\d+)')
+          JIRA_TICKET_NUMBER=$(echo ${{ env.SOURCE_BRANCH_NAME }} | grep -oP '([A-Z]+-\d+)' || echo "NO-TICKET-FOUND")
           echo "Jira ticket number: $JIRA_TICKET_NUMBER"
           # Set the output variable
           echo "JIRA_TICKET_NUMBER=$JIRA_TICKET_NUMBER" >> $GITHUB_ENV
