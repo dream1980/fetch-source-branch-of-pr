@@ -1,0 +1,44 @@
+name: Merge develop to main
+
+on:
+  workflow_dispatch:
+
+env:
+  PIPELINE_SCRIPTS_PATH: ./.github/scripts
+
+jobs:
+  merge-develop-to-main:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository under $GITHUB_WORKSPACE to allow job access
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for all branches and tags
+
+      - name: Merge develop into main
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git checkout main
+          git rebase --strategy-option=theirs develop
+        shell: bash
+
+      # - name: Commit version bump
+      #   run: |
+      #     git config user.name "GitHub Actions"
+      #     git config user.email "actions@github.com"
+      #     git add -A
+      #     git commit -m 'develop to main - release version ${{env.SHORT_VERSION}}'
+      #   shell: bash
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v6.0.5
+        with:
+          base: main
+          branch: dev2main - release version ${{env.SHORT_VERSION}}
+          commit-message: dev2main
+          title: 'release: develop -> main - version ${{env.SHORT_VERSION}}'
+          body: 'This PR release a version.'
+          draft: false
