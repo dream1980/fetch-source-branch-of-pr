@@ -24,13 +24,13 @@ jobs:
           git rebase --strategy-option=theirs develop
         shell: bash
 
-      # - name: Commit version bump
-      #   run: |
-      #     git config user.name "GitHub Actions"
-      #     git config user.email "actions@github.com"
-      #     git add -A
-      #     git commit -m 'develop to main - release version ${{env.SHORT_VERSION}}'
-      #   shell: bash
+      - name: Commit version release
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add -A
+          git commit -m 'develop to main - release version ${{env.SHORT_VERSION}}'
+        shell: bash
 
       - name: Create Pull Request
         id: cpr
