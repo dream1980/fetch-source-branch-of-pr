@@ -30,12 +30,15 @@ jobs:
           echo "SOURCE_BRANCH_NAME=no-ticket-in-this-branch" >> $GITHUB_ENV
       - name: Get Jira Ticket Number
         id: get_jira_ticket_number
+        # run only if the source branch name startswith bc- or BC-
+        # use startWith from github actions
+        if: startsWith(env.SOURCE_BRANCH_NAME, 'bc-') || startsWith(env.SOURCE_BRANCH_NAME, 'BC-')
         # get the jira ticket number from the prefix of the branch name,
         # for example "BC-12345-this is my brach-name" will be jira ticket BC-12345
         run: |
           echo "get the jira ticket number from the prefix of the branch name"
           echo "for example 'BC-12345-this is my brach-name' will be jira ticket BC-12345"
-          JIRA_TICKET_NUMBER=$(echo ${{ env.SOURCE_BRANCH_NAME }} | grep -oP '([A-Z]+-\d+)' || echo "NO-TICKET-FOUND")
+          JIRA_TICKET_NUMBER=$(echo ${{ env.SOURCE_BRANCH_NAME }} | grep -oP '([A-Z]+-\d+)' > 
           echo "Jira ticket number: $JIRA_TICKET_NUMBER"
           # Set the output variable
           echo "JIRA_TICKET_NUMBER=$JIRA_TICKET_NUMBER" >> $GITHUB_ENV
