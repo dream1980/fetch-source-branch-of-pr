@@ -20,14 +20,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # get the jira ticket number from the prefix of the branch name or pull request title, 
-      # for example "BC-12345-this is my brach-name" will be jira ticket BC-12345
+      - name: Get Source Branch Name
+        id: get_source_branch_name
+        run: |
+          # Get the Source Branch Name from commit merge message
+          MERGE_COMMIT_MESSAGE=$(git log --format=%B -n 1 "${GITHUB_SHA}")
+          SOURCE_BRANCH_NAME=$(echo "$MERGE_COMMIT_MESSAGE" | grep -oP '(?<=from ).*' | awk -F/ '{print $NF}')
+          echo "Souce Branch Name: $SOURCE_BRANCH_NAME"
+          echo "SOURCE_BRANCH_NAME=$SOURCE_BRANCH_NAME" >> $GITHUB_ENV
       - name: Get Jira Ticket Number
         id: get_jira_ticket_number
+        # get the jira ticket number from the prefix of the branch name,
+        # for example "BC-12345-this is my brach-name" will be jira ticket BC-12345
         run: |
-          # Get the Branch Name
-          MERGE_COMMIT_MESSAGE=$(git log --format=%B -n 1 "${GITHUB_SHA}")
-          BRANCH_NAME=$(echo "$MERGE_COMMIT_MESSAGE" | grep -oP '(?<=from ).*' | awk -F/ '{print $NF}')
-          echo "Branch Name: $BRANCH_NAME"
+          echo "get the jira ticket number from the prefix of the branch name"
+          echo "for example 'BC-12345-this is my brach-name' will be jira ticket BC-12345"
+          JIRA_TICKET_NUMBER=$(echo ${{ env.SOURCE_BRANCH_NAME }} | grep -oP '([A-Z]+-\d+)')
+          echo "Jira ticket number: $JIRA_TICKET_NUMBER"
+          # Set the output variable
+          echo "JIRA_TICKET_NUMBER=$JIRA_TICKET_NUMBER" >> $GITHUB_ENV
 
           
