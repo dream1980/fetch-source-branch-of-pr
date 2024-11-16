@@ -2,17 +2,6 @@ name: CI/CD
 
 on:
   push:
-  #   branches:
-  #     - develop
-  #     - rc
-  #     - hotfix
-  #     - main
-
-  # pull_request:
-  #   types:
-  #     - opened
-  #     - reopened
-  #     - synchronize
 
 jobs:
   cancel-previous-builds:
