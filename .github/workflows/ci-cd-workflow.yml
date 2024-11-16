@@ -39,5 +39,9 @@ jobs:
           echo "Jira ticket number: $JIRA_TICKET_NUMBER"
           # Set the output variable
           echo "JIRA_TICKET_NUMBER=$JIRA_TICKET_NUMBER" >> $GITHUB_ENV
+      - name: Add Fix Version to Jira Ticket
+        if: env.JIRA_TICKET_NUMBER != 'NO-TICKET-FOUND'
+        run: |
+          echo "TICKET NUMBER: ${{ env.JIRA_TICKET_NUMBER }}"
 
           
