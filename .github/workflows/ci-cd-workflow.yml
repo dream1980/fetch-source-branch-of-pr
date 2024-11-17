@@ -27,7 +27,7 @@ jobs:
           # MERGE_COMMIT_MESSAGE=$(git log --format=%B -n 1 "${GITHUB_SHA}")
           # SOURCE_BRANCH_NAME=$(echo "$MERGE_COMMIT_MESSAGE" | grep -oP '(?<=from ).*' | awk -F/ '{print $NF}')
           # echo "Souce Branch Name: $SOURCE_BRANCH_NAME"
-          echo "SOURCE_BRANCH_NAME=no-ticket-in-this-branch" >> $GITHUB_ENV
+          echo "SOURCE_BRANCH_NAME=BC-11111-ticket-in-this-branch" >> $GITHUB_ENV
       - name: Get Jira Ticket Number
         id: get_jira_ticket_number
         # run only if the source branch name startswith bc- or BC-
